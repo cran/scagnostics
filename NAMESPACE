@@ -1,2 +1,2 @@
-exportPattern("^[^\\.]")
-useDynLib(scagnostics)
+exportPattern("^scagnostics")
+import(rJava)
