@@ -142,21 +142,18 @@ public class Main {
     private static void normalizePoints(double[][] points) {
         double[] min = new double[points.length];
         double[] max = new double[points.length];
-        for (int i = 0; i < points.length; i++) {
-            min[i] = Double.MAX_VALUE;
-            max[i] = Double.MIN_VALUE;
-        }
-        for (int i = 0; i < points.length; i++) {
+        for (int i = 0; i < points.length; i++)
             for (int j = 0; j < points[0].length; j++) {
-                if (min[i] > points[i][j]) min[i] = points[i][j];
-                if (max[i] < points[i][j]) max[i] = points[i][j];
+		if (j == 0)
+		    max[i] = min[i] = points[i][0];
+		else if (min[i] > points[i][j])
+		    min[i] = points[i][j];
+		else if (max[i] < points[i][j])
+		    max[i] = points[i][j];
             }
-        }
-        for (int i = 0; i < points.length; i++) {
-            for (int j = 0; j < points[0].length; j++) {
+        for (int i = 0; i < points.length; i++)
+            for (int j = 0; j < points[0].length; j++)
                 points[i][j] = (points[i][j] - min[i]) / (max[i] - min[i]);
-            }
-        }
     }
 
     private static void computeTests(double[][] scagnostics, boolean[] outliers, boolean[] exemplars) {
