@@ -50,7 +50,7 @@ pair of variables.
   \emph{Graph-Theoretic Scagnostics}. Proceedings of the 2005 IEEE
   Symposium on Information Visualization, p. 21.
   
-  \url{http://www.cs.uic.edu/~wilkinson/}
+  \url{https://www.cs.uic.edu/~wilkinson/}
 }
 \examples{
 # tesing various forms

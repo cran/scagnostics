@@ -1,6 +1,15 @@
  NEWS/ChangeLog for scagnostics
 --------------------------------
 
+0.2-6	2022-02-02
+    o	update NAMESPACE to modern standards
+
+    o	check incoming data to make sure it is numeric and
+	not constant
+
+0.2-5	2013-03-11
+    o	license clarificaion in DESCRIPTION
+
 0.2-4	2012-11-05
     o	fix a bug in normalizePoints() causing all-negative
 	data to be scaled incorrectly

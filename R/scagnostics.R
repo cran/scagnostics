@@ -37,33 +37,54 @@ scagnostics.default <- function(x, y, bins=50, maxBins=1000, ...) {
   complete <- !is.na(x) & !is.na(y)  
   x <- as.double(x[complete])
   y <- as.double(y[complete])
-  
-  data <- .jarray(list(.jarray(x),.jarray(y)),"[D")
+  if (length(x) < 3) stop("Need at least three valid cases")
+  if (diff(range(x)) == 0) stop("x is constant")
+  if (diff(range(y)) == 0) stop("y is constant")
+  data <- .jarray(list(.jarray(x), .jarray(y)), "[D")
   .scagnostics.for.data(data, bins, maxBins)
 }
 
 scagnostics.data.frame <- function(x, bins=50, maxBins=1000, ...) {
-  if (dim(x)[2] < 1) stop("need at least two variables")
-  data <- .jarray(lapply(x, function(x) .jarray(as.double(x))), "[D")
-  .scagnostics.for.data(data, bins, maxBins, names(x))
+    if (ncol(x) < 1) stop("need at least two variables")
+    if (nrow(x) < 3) stop("need at least three cases")
+    scagnostics.list(x, bins, maxBins, ...)
 }
 
 scagnostics.list <- function(x, bins=50, maxBins=1000, ...) {
-  if (length(x) < 2) stop("need at least two variables")
-  n <- unlist(lapply(x, length))
-  if (!all(n == n[1])) stop("all variables must have the same length")
-  data <- .jarray(lapply(x, function(x) .jarray(as.double(x))), "[D")
-  nam <- names(x)
-  if (is.null(nam)) nam <- as.character(1:length(x))
-  .scagnostics.for.data(data, bins, maxBins, nam)
+    if (length(x) < 2) stop("need at least two variables")
+    n <- lengths(x)
+    if (!all(n == n[1])) stop("all variables must have the same length")
+    if (is.null(names(x))) names(x) <- paste0("V", seq.int(length(x)))
+    cj <- lapply(x, function(x) {
+        dv <- as.double(x)
+        if (all(is.na(dv)) || (diff(range(dv, na.rm=TRUE)) == 0))
+            NULL
+        else
+            .jarray(dv)
+    })
+    nils <- sapply(cj, is.null)
+    if (any(nils)) {
+        warning("Following variables are constant or non-numeric and will be removed: ",
+                paste(names(cj)[nils], collapse=", "))
+        cj <- cj[!nils]
+    }
+    data <- .jarray(cj, "[D")
+    .scagnostics.for.data(data, bins, maxBins, names(cj))
 }
 
 scagnostics.matrix <- function(x, bins=50, maxBins=1000, ...) {
-  if (dim(x)[2] < 1) stop("need at least two variables")
-  data <- .jarray(lapply(1:(dim(x)[2]), function(i) .jarray(as.double(x[,i]))), "[D")
-  nam <- colnames(x)
-  if (is.null(nam)) nam <- as.character(1:length(x))
-  .scagnostics.for.data(data, bins, maxBins, nam)
+    if (dim(x)[2] < 1) stop("need at least two variables")
+    if (!is.numeric(x)) stop("the matrix must be numeric")
+    if (is.null(colnames(x))) colnames(x) <- paste0("V", seq.int(ncol(x)))
+    nils <- apply(x, 2, function(o) all(is.na(o)) || (diff(range(o, na.rm=TRUE)) == 0))
+    if (any(nils)) {
+        warning("Following variables are constant and will be removed: ",
+                paste(colnames(x)[nils], collapse=", "))
+        x <- x[,!nils]
+    }
+    data <- .jarray(lapply(1:ncol(x), function(i) .jarray(as.double(x[,i]))), "[D")
+    nam <- colnames(x)
+    .scagnostics.for.data(data, bins, maxBins, nam)
 }
 
 ## --- outliers

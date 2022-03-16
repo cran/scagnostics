@@ -1,20 +1,15 @@
 Package: scagnostics
-Version: 0.2-4.1
+Version: 0.2-6
 Title: Compute scagnostics - scatterplot diagnostics
 Author: Lee Wilkinson <leland.wilkinson@gmail.com> and Anushka Anand
 Maintainer: Simon Urbanek <simon.urbanek@r-project.org>
 Depends: rJava
-Description: Calculates graph theoretic scagnostics. Scagnostics
-        describe various measures of interest for pairs of variables,
-        based on their appearance on a scatterplot.  They are useful
-        tool for discovering interesting or unusual scatterplots from a
-        scatterplot matrix, without having to look at every individual
-        plot.
-License: file LICENSE
-URL: http://www.rforge.net/scagnostics/,
-        http://www.cs.uic.edu/~wilkinson/
-Packaged: 2018-04-04 18:07:36 UTC; hornik
-Repository: CRAN
-Date/Publication: 2018-04-04 19:46:48 UTC
+Description: Calculates graph theoretic scagnostics. Scagnostics describe various measures of interest for pairs of variables, based on their appearance on a scatterplot.  They are useful tool for discovering interesting or unusual scatterplots from a scatterplot matrix, without having to look at every individual plot.
+License: BSD_2_clause + file LICENSE
+URL: https://www.rforge.net/scagnostics/,
+        https://www.cs.uic.edu/~wilkinson/
 NeedsCompilation: no
+Packaged: 2022-03-16 10:07:07 UTC; rforge
 License_is_FOSS: yes
+Repository: CRAN
+Date/Publication: 2022-03-16 14:55:10 UTC
